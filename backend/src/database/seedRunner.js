@@ -8,7 +8,11 @@ module.exports = async function seedRunner() {
   await db.query(
     `INSERT INTO users (name, email, password, role, is_approved)
      VALUES ($1, $2, $3, $4, $5)
-     ON CONFLICT (email) DO NOTHING`,
+     ON CONFLICT (email) DO UPDATE
+     SET name = EXCLUDED.name,
+         password = EXCLUDED.password,
+         role = EXCLUDED.role,
+         is_approved = EXCLUDED.is_approved`,
     ['Admin User', 'admin@tutorbooking.com', hashedPassword, 'admin', true]
   );
 };

@@ -34,6 +34,13 @@ The backend runs on `http://localhost:5000` by default.
 |------|-------|----------|
 | Admin | admin@tutorbooking.com | password123 |
 
+If the admin login stops working (e.g., the admin password in the DB changed), you can restore it by running:
+
+```bash
+cd backend
+npm run seed
+```
+
 Note: Seed data is intentionally minimal (admin only). Create tutors/students from the Admin app.
 
 #### Reset DB (remove placeholder data)
