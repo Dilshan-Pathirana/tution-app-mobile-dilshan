@@ -10,7 +10,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://<your-pc-lan-ip>:5000/api"
+        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-qrs3euahaq-as.a.run.app/api"
       }
     },
     "production": {
@@ -21,7 +21,7 @@
         "distribution": "store"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://<your-api-domain>/api"
+        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-qrs3euahaq-as.a.run.app/api"
       }
     }
   }

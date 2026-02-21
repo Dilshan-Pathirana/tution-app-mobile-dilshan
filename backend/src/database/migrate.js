@@ -8,6 +8,7 @@ const migrate = async () => {
     console.log('✅ Database migration completed successfully!');
   } catch (error) {
     console.error('❌ Migration failed:', error.message);
+    process.exitCode = 1;
   } finally {
     process.exit();
   }
