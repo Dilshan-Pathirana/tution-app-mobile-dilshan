@@ -10,7 +10,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-qrs3euahaq-as.a.run.app/api"
+        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-37478911961.asia-southeast1.run.app/api"
       }
     },
     "production": {
@@ -21,7 +21,7 @@
         "distribution": "store"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-qrs3euahaq-as.a.run.app/api"
+        "EXPO_PUBLIC_API_URL": "https://tutorbooking-api-37478911961.asia-southeast1.run.app/api"
       }
     }
   }
