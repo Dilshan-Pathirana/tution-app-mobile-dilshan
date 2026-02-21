@@ -1,0 +1,37 @@
+{
+  "name": "tutor-booking-backend",
+  "version": "1.0.0",
+  "description": "TutorBooking backend API - Node.js + Express + Supabase PostgreSQL",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "start:prod": "node src/database/migrate.js && node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node src/database/migrate.js",
+    "seed": "node src/database/seed.js",
+    "reset": "node src/database/reset.js",
+    "smoke": "node src/scripts/apiSmokeTest.js"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.0",
+    "stripe": "^17.0.0",
+    "firebase-admin": "^13.0.0",
+    "express-validator": "^7.2.0",
+    "multer": "^1.4.5-lts.1",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "express-rate-limit": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "private": true
+}

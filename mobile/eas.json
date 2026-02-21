@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 12.0.0"
+  },
+  "build": {
+    "preview-apk": {
+      "developmentClient": false,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://<your-pc-lan-ip>:5000/api"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "distribution": "store"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://<your-api-domain>/api"
+      }
+    }
+  }
+}

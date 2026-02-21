@@ -1,0 +1,296 @@
+Software Requirements Specification (SRS)
+
+Project Name: TutorBooking – “Booking.com for Tuition Classes”
+Prepared by: Dilshan Pathirana
+Date: 21-Feb-2026
+
+1. Introduction
+1.1 Purpose
+
+The purpose of TutorBooking is to provide a platform where students can search, review, and enroll in tuition classes, and tutors can manage their classes, announcements, and promotions. The admin oversees the platform’s operations, approves tutors, manages promotions, and monitors analytics.
+
+1.2 Scope
+
+Mobile app for iOS and Android (React Native).
+
+Admin web dashboard (React.js).
+
+Features for students, tutors, and admin.
+
+Push notifications via Firebase.
+
+Tutor promotion payments via Stripe.
+
+Full database to store users, classes, reviews, enrollments, and promotions.
+
+2. Functional Requirements
+2.1 User Roles
+Role	Features
+Student	Search classes, view class details, enroll, leave reviews, receive push notifications
+Tutor	Register classes, post announcements, upload content, manage class schedule, promote classes via payment
+Admin	Approve/reject tutors, manage payments, control content, monitor analytics, send notifications
+2.2 Student Functional Requirements
+
+Sign up / Login.
+
+Search classes by location, subject, grade, ratings.
+
+View class details: schedule, tutor info, reviews.
+
+Enroll in classes (payment outside app).
+
+Submit reviews and ratings.
+
+Receive push notifications for announcements or schedule changes.
+
+2.3 Tutor Functional Requirements
+
+Sign up / Login.
+
+Submit verification for admin approval.
+
+Add/update classes: title, subject, grade, schedule, content, location.
+
+Post announcements or notifications.
+
+Promote classes via Stripe payment.
+
+Track enrolled students.
+
+2.4 Admin Functional Requirements
+
+Approve/reject tutor registrations.
+
+Manage all classes, promotions, and content.
+
+Track payments from promotions.
+
+View analytics: total tutors, students, enrollments, revenue.
+
+Send push notifications to students or tutors.
+
+3. Non-Functional Requirements
+
+Performance: Must handle 50 tutors & 500 students without delay.
+
+Scalability: Cloud-ready to scale to 10,000+ users.
+
+Security: Password hashing, JWT authentication, secure payments (Stripe).
+
+Reliability: Firebase notifications and database backups.
+
+Availability: 99% uptime.
+
+Cost: Deploy on free/low-cost cloud services (Supabase, Render, Firebase, Vercel).
+
+4. System Architecture
+4.1 High-Level Architecture
+[Student App iOS/Android]     [Tutor App iOS/Android]
+           |                             |
+           | REST API / GraphQL           |
+           v                             v
+                 [Backend Server / API]
+                        |
+       ------------------------------------
+       |                |                 |
+[Database]       [Push Notifications]   [Payment Gateway]
+(PostgreSQL)       (Firebase FCM)       (Stripe)
+                        |
+                   [Admin Dashboard React.js]
+
+Mobile apps communicate with backend APIs.
+
+Backend handles authentication, CRUD, payments, notifications, analytics.
+
+Admin dashboard monitors and controls all entities.
+
+5. Database Design (ER Diagram)
+
+ER Diagram Description:
+
+Entities: Users, Tutors, Classes, Enrollments, Reviews, Announcements, Promotions
+
+Users (id, name, email, password, role, profile_pic)
+    |
+    | 1-to-1
+    v
+Tutors (user_id, bio, subjects, location, rating)
+    |
+    | 1-to-many
+    v
+Classes (id, tutor_id, title, description, subject, grade, location, schedule, price, promotion)
+    |        |
+    |        | 1-to-many
+    |        v
+    |   Announcements (id, class_id, tutor_id, content, created_at)
+    |
+    | 1-to-many
+    v
+Enrollments (id, class_id, student_id, enrolled_at)
+    |
+    v
+Reviews (id, class_id, student_id, rating, review, created_at)
+
+Promotions (id, tutor_id, class_id, payment_status, start_date, end_date)
+
+Notes:
+
+Users table stores all users; role differentiates students, tutors, admin.
+
+Tutors links to Users.
+
+Classes link to Tutors.
+
+Enrollments link students to classes.
+
+Reviews link students to classes.
+
+Announcements link to classes for notifications.
+
+Promotions track paid promoted classes.
+
+6. API Endpoints Table
+Endpoint	Method	Request Body	Response	Role
+/auth/register	POST	{name, email, password, role}	Success/failure	Student/Tutor
+/auth/login	POST	{email, password}	JWT token	All
+/classes	GET	?subject=&grade=&location=&rating=	List of classes	Student
+/classes/:id	GET	-	Class details, reviews	Student
+/classes/:id/enroll	POST	{student_id}	Enrollment confirmation	Student
+/classes/:id/review	POST	{student_id, rating, review}	Success/failure	Student
+/tutor/classes	POST	{title, subject, grade, schedule, location, price}	Class created	Tutor
+/tutor/classes/:id/announcement	POST	{content}	Success/failure	Tutor
+/promotions/pay	POST	{class_id, tutor_id, payment_info}	Payment status	Tutor
+/admin/tutors	GET	-	List of pending tutors	Admin
+/admin/tutors/:id/approve	POST	-	Approval confirmation	Admin
+/admin/analytics	GET	-	Total tutors, students, enrollments, revenue	Admin
+/notifications/send	POST	{user_ids, message}	Success	Admin
+7. Mobile Screen Flow
+Student Flow
+Login/Register → Home/Search → Filter → Class Detail → Enroll → Review → Notifications
+
+Screens:
+
+Login / Register
+
+Home / Search with filters
+
+Class Detail Page
+
+Enrollment Confirmation
+
+Review Submission
+
+Notifications Center
+
+Tutor Flow
+Login/Register → Dashboard → Add/Edit Class → Announcements → Promotions → Notifications
+
+Screens:
+
+Login / Register
+
+Dashboard (classes overview)
+
+Add/Edit Class
+
+Announcements Page
+
+Promotion Payment Page
+
+Enrollments List
+
+Admin Flow
+Login → Dashboard → Tutor Approvals → Class Management → Promotion & Payment → Analytics → Notifications
+
+Screens:
+
+Admin Login
+
+Dashboard Overview
+
+Tutor Approval Page
+
+Class Management Page
+
+Promotions & Payments Page
+
+Analytics Page
+
+Send Notifications Page
+
+8. Full Visual Design Blueprint
+
+Design Guidelines:
+
+Theme: Clean, modern, minimalistic.
+
+Colors: Light/white background, primary accent color #4F46E5 (indigo).
+
+Fonts: Sans-serif (Roboto/Inter) for readability.
+
+Buttons: Rounded corners, primary for actions, secondary for navigation.
+
+Mobile UI Patterns: Bottom navigation for students/tutors, side navigation for admin.
+
+Student App Screens (Wireframe):
+
+Home/Search: Search bar + filters (subject, grade, location, ratings) + class cards
+
+Class Card: Title, tutor, schedule, price, rating stars
+
+Class Detail: Description, tutor bio, enroll button, reviews, announcements
+
+Notifications: List of announcements with timestamps
+
+Tutor App Screens:
+
+Dashboard: Classes list with enrollments, pending promotions
+
+Add/Edit Class: Form with title, subject, grade, location, schedule, content upload
+
+Announcements: Create announcement modal
+
+Promotions: Payment gateway integration screen
+
+Admin Dashboard Screens:
+
+Overview: Graphs for total tutors, students, enrollments, revenue
+
+Tutor Approval: List of pending tutors with approve/reject buttons
+
+Class Management: Table with class info, promotion status, content control
+
+Notifications: Send push notifications modal
+
+Analytics: Charts and graphs (total enrollments, revenue by promotions, ratings overview)
+
+9. Deployment Plan
+Component	Platform	Notes
+Backend API	Node.js on Render Free	Connects mobile apps + admin dashboard
+Database	Supabase Postgres Free Tier	Hosted, secure, scalable
+File Storage	Firebase Storage	For class content uploads
+Mobile Apps	React Native + Expo	Cross-platform, builds for iOS & Android
+Push Notifications	Firebase Cloud Messaging	Free and reliable
+Admin Dashboard	React.js + Vercel Free Tier	Easy GitHub deploy, auto-updates
+
+✅ Total Estimated Cost: ~$0/month initially, scalable to ~$10–15/month with higher usage
+
+10. Testing Strategy
+
+Unit tests for backend APIs using Jest or PyTest
+
+Integration tests for API → Database interactions
+
+Manual functional testing for mobile apps
+
+Cross-device testing for iOS and Android
+
+Push notification testing via Firebase console
+
+11. Risk Management
+Risk	Impact	Mitigation
+Payment failure for promotions	Medium	Stripe webhooks, retry logic, admin dashboard monitoring
+Unauthorized access	High	JWT authentication, role-based access
+Data loss	High	Daily database backups on Supabase
+Push notification failure	Low	Firebase FCM monitoring, retry logic
+Low tutor/student adoption	Medium	Marketing campaigns, app onboarding
